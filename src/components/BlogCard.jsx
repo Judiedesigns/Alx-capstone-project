@@ -9,8 +9,8 @@ const BlogCard = ({article}) => {
     };
 
     return (
-        <div className="hover:scale-102 transition-transform duration-500" onClick={handleClick} style={{cursor: 'pointer'}}>
-            <img src={article.image} alt="blog-image" className='h-auto w-full rounded-sm'/>
+        <div className="hover:scale-102 transition-transform duration-800" onClick={handleClick} style={{cursor: 'pointer'}}>
+            <img src={article.image} alt={article.title} className='h-auto w-full rounded-sm'/>
             <p className='text-[#021720] text-lg font-normal leading-6 mt-6 text-left'>
                 {article.title}
             </p>
