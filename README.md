@@ -32,9 +32,9 @@ npm start
 
 ---
 
-## 🚀 Deployment
+## 🚀 Live link
 
-Easily deploy with **Vercel**, **Netlify**, or **GitHub Pages**.
+https://alx-capstone-project-pi.vercel.app/
 
 ---
 
