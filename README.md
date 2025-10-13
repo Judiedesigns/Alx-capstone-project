@@ -1,16 +1,44 @@
-# React + Vite
+# 📰 News Reader App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## 📖 Overview
 
-Currently, two official plugins are available:
+The **News Reader App** is a React-based web application that lets users browse the latest headlines and search for articles using a public news API. It’s built with **React, JavaScript, HTML, CSS,** and optionally **Tailwind CSS**, focusing on responsive design, smooth interactivity, and real-time content fetching.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## React Compiler
+## ✨ Features
 
-The React Compiler is not enabled on this template. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+* 🗞️ **Top Headlines:** View trending news from around the world
+* 🔍 **Search Articles:** Find news by keywords or categories
+* 📱 **Responsive Layout:** Works seamlessly on all devices
+* ⚠️ **Error Handling:** Displays clear messages for invalid or failed searches
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## 🛠️ Tech Stack
+
+**React**, **JavaScript (ES6+)**, **HTML5**, **CSS3**, **Tailwind CSS (optional)**, and **NewsAPI**
+
+---
+
+## ⚙️ Setup
+
+```bash
+git clone https://github.com/your-username/news-reader-app.git
+cd news-reader-app
+npm install
+npm start
+```
+
+---
+
+## 🚀 Deployment
+
+Easily deploy with **Vercel**, **Netlify**, or **GitHub Pages**.
+
+---
+
+## 🙌 Acknowledgements
+
+* [NewsAPI](https://newsapi.org/) for real-time data
+

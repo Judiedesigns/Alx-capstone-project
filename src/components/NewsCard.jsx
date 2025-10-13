@@ -1,7 +1,7 @@
 // import blogImg1 from '../assets/blog-img-1.png';
 import { useNavigate } from "react-router-dom";
 
-const BlogCard = ({article}) => {
+const NewsCard = ({article}) => {
     const navigate = useNavigate();
 
     const handleClick = () => {
@@ -24,4 +24,4 @@ const BlogCard = ({article}) => {
     )
 };
 
-export default BlogCard;
+export default NewsCard;

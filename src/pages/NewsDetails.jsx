@@ -1,6 +1,6 @@
 import details from '../assets/detailsPhoto.png';
 import details2 from '../assets/blog-details-2.png';
-import BlogCard from '../components/BlogCard';
+import NewsCard from '../components/NewsCard';
 import data from '../data.json';
 
 const BlogDetails = () => {
@@ -9,8 +9,13 @@ const BlogDetails = () => {
             <section className='max-w-4xl mx-auto'>
                 <p className="text-[#2C2F24] font-semibold md:text-4xl text-3xl max-w-4xl mx-auto sm:mt-16 mt-10 text-center">The secret tips & tricks to prepare a perfect burger & pizza for our customers</p>
 
+                <div className='flex justify-between items-center gap-6 mt-12'>
+                    <h3 className='font-semibold sm:text-lg text-base leading-6'>Author: John Doe</h3>
+                    <p className='text-[#414536] sm:text-base text-sm leading-6'> November 12, 2024</p>
+                </div>
+
                 <div>
-                    <img src={details} alt="detailsPhoto" className='max-w-5xl w-full h-auto mx-auto md:my-16 my-10' />
+                    <img src={details} alt="detailsPhoto" className='max-w-5xl w-full h-auto mx-auto md:mb-16 mb-10 mt-6' />
                 </div>
 
                 <div className='w-full'>
@@ -103,7 +108,7 @@ const BlogDetails = () => {
                     {[...data]
                         .slice(0, 3)
                         .map(article => (
-                            <BlogCard key={article.id} article={article} />
+                            <NewsCard key={article.id} article={article} />
                         ))
                     }
                 </div>

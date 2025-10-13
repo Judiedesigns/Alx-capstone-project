@@ -1,5 +1,5 @@
 import heroImg from '../assets/heroImg.png';
-import BlogCard from '../components/BlogCard';
+import NewsCard from '../components/NewsCard';
 import data from '../data.json';
 
 const Home = () => {
@@ -27,7 +27,7 @@ const Home = () => {
         </div>
         <div className='grid grid-cols-1 md:grid-cols-3 gap-8 mb-15 mt-20'>
           {data.map(article => (
-            <BlogCard key={article.id} article={article} />
+            <NewsCard key={article.id} article={article} />
           ))}
         </div>  
       </section>
