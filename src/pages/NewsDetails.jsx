@@ -1,118 +1,120 @@
-import details from '../assets/detailsPhoto.png';
-import details2 from '../assets/blog-details-2.png';
+import React, { useState, useEffect, use } from 'react';
+// import details from '../assets/detailsPhoto.png';
+// import details2 from '../assets/blog-details-2.png';
 import NewsCard from '../components/NewsCard';
-import data from '../data.json';
+import { useParams, Link } from 'react-router-dom';
+import axios from 'axios';
+import Loading from '../components/Loader';
 
 const BlogDetails = () => {
+    const { id } = useParams();
+    const api_token = import.meta.env.VITE_NEWS_API_TOKEN;
+    const [article, setArticle] = useState({});
+    const [loading, setLoading] = useState(true);
+    const [similarNews, setSimilarNews] = useState([]);
+
+    useEffect(() => {
+        const fetchArticle = async () => {
+            try {
+                const res = await axios.get(
+                    `https://api.thenewsapi.com/v1/news/uuid/${id}?api_token=${api_token}`
+                );
+                // console.log(res.data);
+                setArticle(res.data);
+            } catch (err) {
+                console.error('Error fetching article details:', err);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchArticle();
+    }, [id, api_token]);
+
+    const formattedDate = new Date(article.published_at).toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+    });
+
+    const date = new Date(article.published_at);
+    const refindedDate = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+
+
+    useEffect(() => {
+        const fetchSimilarNews = async () => {
+            if (!article?.published_at) return;
+
+            console.log('Article Published At:', article.published_at);
+            try {
+                const res = await axios.get(
+                    `https://api.thenewsapi.com/v1/news/similar/${id}?api_token=${api_token}&language=en&published_on=${refindedDate}`
+                );
+                // console.log('Similar News:', res.data.data);
+                setSimilarNews(res.data.data);
+            } catch (err) {
+                console.error('Error fetching similar news:', err);
+            }
+        };
+        fetchSimilarNews();
+    }, [article?.published_at, api_token]);
+
     return (
         <>
+        {loading ? (
+            <div className="flex justify-center items-center h-screen w-full">
+                <Loading />
+            </div>
+        ) : (   
             <section className='max-w-4xl mx-auto'>
-                <p className="text-[#2C2F24] font-semibold md:text-4xl text-3xl max-w-4xl mx-auto sm:mt-16 mt-10 text-center">The secret tips & tricks to prepare a perfect burger & pizza for our customers</p>
+                <p className="text-[#2C2F24] font-semibold md:text-4xl text-3xl max-w-4xl mx-auto sm:mt-16 mt-10 text-center">{article.title}</p>
 
                 <div className='flex justify-between items-center gap-6 mt-12'>
-                    <h3 className='font-semibold sm:text-lg text-base leading-6'>Author: John Doe</h3>
-                    <p className='text-[#414536] sm:text-base text-sm leading-6'> November 12, 2024</p>
+                    <h3 className='sm:text-lg text-base leading-6'>Source: <span className='text-blue-500 underline'><Link to={article.source}>{article.source}</Link></span></h3>
+                    <p className='text-[#414536] sm:text-base text-sm leading-6'> {formattedDate}</p>
                 </div>
 
                 <div>
-                    <img src={details} alt="detailsPhoto" className='max-w-5xl w-full h-auto mx-auto md:mb-16 mb-10 mt-6' />
+                    <img src={article.image_url} alt={article.title} className='max-w-5xl w-full h-auto mx-auto md:mb-16 mb-10 mt-6' />
                 </div>
 
                 <div className='w-full'>
-                    <h3 className='text-left font-bold sm:text-lg text-base mb-5'>What do you need to prepare a home-made burger?</h3>
 
                     <p className='text-left text-[#414536] sm:text-base text-sm leading-6'>
-                        Creating the perfect burger and pizza is an art, combining ingredients, techniques, and passion to craft dishes that truly delight the palate. Today, we'll unveil some closely guarded secrets and insider tips for mastering these beloved staples of the culinary world.
-                    </p>
-
-                    <p className='text-left mt-6'>
-                        <ol className='space-y-3'>
-                            <li>
-                                <p className='text-left text-[#414536] sm:text-base text-sm leading-6'>
-                                    <span className='font-bold'>Quality Beef:</span> The heart of a perfect burger is top-notch beef. Opt for fresh, high-quality ground beef with a fat content of about 20% for the juiciest, most flavorful results.
-                                </p>
-                            </li>
-                            <li>
-                                <p className='text-left text-[#414536] sm:text-base text-sm leading-6'>
-                                    <span className='font-bold'>Seasoning:</span> Simplicity is key here. A generous pinch of salt and black pepper just before cooking will enhance the beef's natural flavors without overshadowing them.
-                                    Don’t Overwork the Meat: When forming your patties, be gentle. Overworking the meat can lead to dense, tough burgers. You want a patty that's firm enough to hold together, but not compressed.
-                                </p>
-                            </li>
-                            <li>
-                                <p className='text-left text-[#414536] sm:text-base text-sm leading-6'>
-                                    <span className='font-bold'>Cooking:</span> High heat is crucial. Whether you're grilling or pan-searing, make sure your cooking surface is hot enough to form a nice crust on the patty, sealing in those delicious juices.
-                                </p>
-                            </li>
-                            <li>
-                                <p className='text-left text-[#414536] sm:text-base text-sm leading-6'>
-                                    <span className='font-bold'>Resting:</span> Allow your cooked burgers to rest for a few minutes before serving. This lets the juices redistribute throughout the patty, ensuring a moist and flavorful bite.
-                                </p>
-                            </li>
-                        </ol>
+                        {article.description}
                     </p>
                 </div>
 
-                <div className='w-full md:mt-12 mt-6'>
-                    <h3 className='text-left font-bold sm:text-lg text-base mb-5'>What are the right ingredients to make it delicious?</h3>
-
-                    <p className='text-left text-[#414536] sm:text-base text-sm leading-6'>
-                        Creating the perfect burger and pizza is an art, combining ingredients, techniques, and passion to craft dishes that truly delight the palate. Today, we'll unveil some closely guarded secrets and insider tips for mastering these beloved staples of the culinary world.
-                    </p>
-
-                    <p className='text-left mt-6'>
-                        <ol className='space-y-3'>
-                            <li>
-                                <p className='text-left text-[#414536] sm:text-base text-sm leading-6'>
-                                    <span className='font-bold'>Quality Beef:</span> The heart of a perfect burger is top-notch beef. Opt for fresh, high-quality ground beef with a fat content of about 20% for the juiciest, most flavorful results.
-                                </p>
-                            </li>
-                            <li>
-                                <p className='text-left text-[#414536] sm:text-base text-sm leading-6'>
-                                    <span className='font-bold'>Seasoning:</span> Simplicity is key here. A generous pinch of salt and black pepper just before cooking will enhance the beef's natural flavors without overshadowing them.
-                                    Don’t Overwork the Meat: When forming your patties, be gentle. Overworking the meat can lead to dense, tough burgers. You want a patty that's firm enough to hold together, but not compressed.
-                                </p>
-                            </li>
-                            <li>
-                                <p className='text-left text-[#414536] sm:text-base text-sm leading-6'>
-                                    <span className='font-bold'>Cooking:</span> High heat is crucial. Whether you're grilling or pan-searing, make sure your cooking surface is hot enough to form a nice crust on the patty, sealing in those delicious juices.
-                                </p>
-                            </li>
-                            <li>
-                                <p className='text-left text-[#414536] sm:text-base text-sm leading-6'>
-                                    <span className='font-bold'>Resting:</span> Allow your cooked burgers to rest for a few minutes before serving. This lets the juices redistribute throughout the patty, ensuring a moist and flavorful bite.
-                                </p>
-                            </li>
-                        </ol>
-                    </p>
-                </div>
-
-                <div>
-                    <img src={details2} alt="detailsPhoto" className='w-full h-auto md:my-16 my-10' />
-                </div>
-
-                <div className='w-full md:mt-12 mt-6 pb-12'>
-                    <h3 className='text-left font-bold sm:text-lg text-base mb-5'>What are the right ingredients to make it delicious?</h3>
-
-                    <p className='text-left text-[#414536] sm:text-base text-sm leading-6'>
-                        Proin faucibus nec mauris a sodales, sed elementum mi tincidunt. Sed eget viverra egestas nisi in consequat. Fusce sodales augue a accumsa Cras sollicitudin, le ligula, porttitor eu, consequat vitae, eleifend ac, enim. Lorem ipsum dolor sit amet, consectetur adipiscing elit lobortis arcu enim urna adipiscing praesent velit viverra sit semper lorem eu cursus ve of all hendrerit elementum morbi curabitur etiam nibh justo, lorem aliquet donec sed sit mi dignissim at ante massa mattis magna sit amet purus gravida quis blandit turpis..
-                    </p>
-                </div>
+                <p className='py-4'>Read details on <span className='text-blue-500 underline'><Link to={article.url} target='_blank'>{article.url}</Link></span></p>
             </section>
-            <section className='md:pt-20 pt-10 pb-6 md:space-y-16 space-y-8'>
-                <div className='max-w-2xl mx-auto text-center space-y-6'>
-                    <h2 className='text-[#2C2F24] capitalize md:text-5xl text-3xl font-medium'>read more articles</h2>
-                    <p className='text-[#414536] leading-5'>We consider all the drivers of change gives you the components you need to change to create a truly happens.</p>
-                </div>
+        )}
+        
+        <Link to="/" className='max-w-4xl mx-auto block mt-10 mb-6 text-blue-500'>&larr; Back to Home</Link>
 
-                <div className='grid grid-cols-1 md:grid-cols-3 gap-8'>
-                    {[...data]
-                        .slice(0, 3)
-                        .map(article => (
-                            <NewsCard key={article.id} article={article} />
-                        ))
-                    }
-                </div>
-            </section>
+            {similarNews.length > 0 && (
+                <section className='md:pt-20 pt-10 pb-6 md:space-y-16 space-y-8 max-w-4xl mx-auto'>
+                    <div className='max-w-2xl mx-auto text-center space-y-6'>
+                        <h2 className='text-[#2C2F24] capitalize md:text-5xl text-3xl font-medium'>read more articles</h2>
+                        <p className='text-[#414536] leading-5'>We consider all the drivers of change gives you the components you need to change to create a truly happens.</p>
+                    </div>
+
+                    <div className='grid grid-cols-1 md:grid-cols-3 gap-8'>
+                        {similarNews
+                            .slice(0, 3)
+                            .map(article => (
+                                <NewsCard key={article.id} article={article} />
+                            ))
+                        }
+                    </div>
+                </section>
+        // ) : (
+        //     <section className='md:pt-20 pt-10 pb-6 md:space-y-16 space-y-8 max-w-4xl mx-auto'>
+        //         <div className='max-w-2xl mx-auto text-center space-y-6'>
+        //             <h2 className='text-[#2C2F24] capitalize md:text-5xl text-3xl font-medium'>No similar articles found</h2>
+        //             <p className='text-[#414536] leading-5'>Sorry, we couldn't find any similar articles.</p>
+        //         </div>
+        //     </section>
+            )}
         </>
     );
 };

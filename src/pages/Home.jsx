@@ -1,8 +1,38 @@
+import { useEffect, useState } from 'react';
 import heroImg from '../assets/heroImg.png';
 import NewsCard from '../components/NewsCard';
-import data from '../data.json';
+import Loading from '../components/Loader';
+import axios from 'axios';
 
 const Home = () => {
+  const [news, setNews] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const api_token = import.meta.env.VITE_NEWS_API_TOKEN;
+  
+  useEffect(() => {
+    const fetchNews = async () => {
+      try {
+        const res = await axios.get(
+          `https://api.thenewsapi.com/v1/news/all?api_token=${api_token}&language=en&limit=20`
+        );
+        // console.log(res.data.data);
+        setNews(res.data.data);
+      } catch (err) {
+        console.error(err);
+        setError('Failed to fetch news articles. Please try again later.');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchNews();
+  }, []);
+
+  // if (error) {
+  //   return <div className="text-red-500 text-center mt-10">{error}</div>;
+  // }
+
   return (
     <>
       <section className='flex items-center justify-between flex-col md:flex-row sm:gap-20 gap-10 py-16'>
@@ -25,14 +55,21 @@ const Home = () => {
             <option>Sport</option>
           </select>
         </div>
-        <div className='grid grid-cols-1 md:grid-cols-3 gap-8 mb-15 mt-20'>
-          {data.map(article => (
-            <NewsCard key={article.id} article={article} />
-          ))}
-        </div>  
+        <div className='flex items-center justify-center'>
+          {loading ? (
+            <Loading />
+          ) : (
+            <div className='grid grid-cols-1 md:grid-cols-3 gap-8 mb-15 mt-20'>
+              {news.map((article) => (
+                <NewsCard key={article.id} article={article} />
+              ))}
+            </div>
+          )}
+          {error && <div className="text-red-500 text-center mt-10">{error}</div>}
+        </div>
       </section>
     </>
   );
 };
-
+//0zbaAHI3MqCTWkGPeh49F87aYPLsQ7TM3BKQ1AnS
 export default Home;
