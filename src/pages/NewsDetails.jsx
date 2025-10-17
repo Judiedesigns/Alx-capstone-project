@@ -44,8 +44,6 @@ const BlogDetails = () => {
     useEffect(() => {
         const fetchSimilarNews = async () => {
             if (!article?.published_at) return;
-
-            console.log('Article Published At:', article.published_at);
             try {
                 const res = await axios.get(
                     `https://api.thenewsapi.com/v1/news/similar/${id}?api_token=${api_token}&language=en&published_on=${refindedDate}`
