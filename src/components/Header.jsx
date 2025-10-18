@@ -19,19 +19,19 @@ function Header () {
             <nav className='hidden md:block'>
                 <ul className="flex space-x-8">
                     <li>
-                        <Link to="/business">Business</Link>
+                        <Link to="/business" className='hover:text-red-700 transition-colors duration-300'>Business</Link>
                     </li>
                     <li>
-                        <Link to="/technology">Technology</Link>
+                        <Link to="/technology" className='hover:text-red-700 transition-colors duration-300'>Technology</Link>
                     </li>
                     <li>
-                        <Link to="/entertainment">Entertainment</Link>
+                        <Link to="/entertainment" className='hover:text-red-700 transition-colors duration-300'>Entertainment</Link>
                     </li>
                     <li>
-                        <Link to="/health">Health</Link>
+                        <Link to="/health" className='hover:text-red-700 transition-colors duration-300' >Health</Link>
                     </li>
                     <li>
-                        <Link to="/science">Science</Link>
+                        <Link to="/science" className='hover:text-red-700 transition-colors duration-300'>Science</Link>
                     </li>
                 </ul>
             </nav>
